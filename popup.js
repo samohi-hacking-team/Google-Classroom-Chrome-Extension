@@ -1,5 +1,5 @@
 var myArray2 = [
-    {'class':'English', 'work':'Read 20 mins', 'due':'11:00 AM'},
+    {'class':'Spainsh', 'work':'Read 20 mins', 'due':'11:00 AM'},
     {'class':'English', 'work':'Write Essay', 'due':'11:00 PM'},
     {'class':'Math', 'work':'Trig functions and parallel lines using math stuff', 'due':'11:00 PM'},
     {'class':'Science', 'work':'Study whales', 'due':'11:00 AM'},
@@ -16,7 +16,7 @@ function buildTable2(data){
                         <td class="duecolumn">${data[i].due}</td>
                   </tr>`
         table.innerHTML += row
-
+    
 
     }
 }

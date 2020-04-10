@@ -71,6 +71,7 @@ function getNewToken(oAuth2Client, callback) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
+
 function listCourses(auth) {
     const classroom = google.classroom({ version: 'v1', auth });
     classroom.courses.list({
@@ -89,12 +90,21 @@ function listCourses(auth) {
                 })
                     .then(function (response) {
                         const courseWork = response.data.courseWork;
+                        data = [];
                         courseWork.forEach((item) => {
-                            console.log(item.title, item.dueDate, item.dueTime)
-
-
+                            if (item.dueDate.year == 2020 && item.dueDate.month == 4 && item.dueDate.day == 4) {
+                                var t = new Date(item.dueDate.year, item.dueDate.month, item.dueDate.day, item.dueTime.hours, item.dueTime.minutes);
+                                //console.log(t);
+                                var n = t.toLocaleDateString();
+                                console.log(course.name + " " + item.title + " " + n)
+                                //console.log(item.dueDate.year, item.dueDate.month, item.dueDate.day, item.dueTime.hours, item.dueTime.minutes)
+                                // console.log(course.name, item.title, item.dueDate, item.dueDate.day)
+                                data.push({ 'class': course.name, 'work': item.title, 'due': t })
+                            }
                         })
-                        console.log(response.courseWork)
+                        buildTable2(data)
+                        console.log(data)
+                        //console.log(response.courseWork)
 
                     },
 
@@ -111,4 +121,52 @@ function listCourses(auth) {
             console.log('No courses found.');
         }
     });
+}
+
+
+
+function addElipses(x) {
+    var y;
+    var z;
+
+    if (x.length > 37) {
+        y = x.substr(0, 37);
+        z = y.substr(0, y.lastIndexOf(" "));
+        return (z + "...");
+    } else {
+        return (x);
+    }
+}
+
+function buildTable2(data) {
+    console.log("Finlay sexy as hell Finlay sexy as hell Finlay sexy as hell", data)
+    var table = document.getElementById('myTable2')
+
+    for (var i = 0; i < data.length; i++) {
+        var row = `<tr>
+                        <td class="classcolumn">${addElipses(data[i].class)}</td>
+                        <td class="workcolumn">${addElipses(data[i].work)}</td>
+                        <td class="duecolumn">${data[i].due}</td>
+                  </tr>`
+        table.innerHTML += row
+
+
+    }
+}
+
+var myArray = [
+    { 'day': 'Today', 'asignments': 'You Have 5 Assignments' },
+]
+
+buildTable(myArray)
+function buildTable(data) {
+    var table = document.getElementById('myTable')
+
+    for (var i = 0; i < data.length; i++) {
+        var row = `<tr>
+                        <td class="daybox">${data[i].day}</td>
+                        <td class="dayhead">${data[i].asignments}</td>
+                  </tr>`
+        table.innerHTML += row
+    }
 }

@@ -1,27 +1,21 @@
-var myArray2 = [
-    {'class':'Spainsh', 'work':'Read 20 mins', 'due':'11:00 AM'},
-    {'class':'English', 'work':'Write Essay', 'due':'11:00 PM'},
-    {'class':'Math', 'work':'Trig functions and parallel lines using math stuff', 'due':'11:00 PM'},
-    {'class':'Science', 'work':'Study whales', 'due':'11:00 AM'},
-]
-buildTable2(myArray2)
-function addElipses(x){
+function addElipses(x) {
     var y;
     var z;
 
     if (x.length > 37) {
-    y = x.substr(0, 37);
-    z = y.substr(0, y.lastIndexOf(" "));
-    return(z + "...");
+        y = x.substr(0, 37);
+        z = y.substr(0, y.lastIndexOf(" "));
+        return (z + "...");
     } else {
-    return(x);
+        return (x);
     }
 }
 
-function buildTable2(data){
+function buildTable2(data) {
+    console.log("Finlay sexy as hell Finlay sexy as hell Finlay sexy as hell", data)
     var table = document.getElementById('myTable2')
 
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
         var row = `<tr>
                         <td class="classcolumn">${addElipses(data[i].class)}</td>
                         <td class="workcolumn">${addElipses(data[i].work)}</td>
@@ -34,14 +28,14 @@ function buildTable2(data){
 }
 
 var myArray = [
-    {'day':'Today', 'asignments':'You Have 5 Assignments'},
+    { 'day': 'Today', 'asignments': 'You Have 5 Assignments' },
 ]
 
 buildTable(myArray)
-function buildTable(data){
+function buildTable(data) {
     var table = document.getElementById('myTable')
 
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
         var row = `<tr>
                         <td class="daybox">${data[i].day}</td>
                         <td class="dayhead">${data[i].asignments}</td>

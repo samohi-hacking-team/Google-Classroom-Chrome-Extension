@@ -5,18 +5,30 @@ var myArray2 = [
     {'class':'Science', 'work':'Study whales', 'due':'11:00 AM'},
 ]
 buildTable2(myArray2)
+function addElipses(x){
+    var y;
+    var z;
+
+    if (x.length > 37) {
+    y = x.substr(0, 37);
+    z = y.substr(0, y.lastIndexOf(" "));
+    return(z + "...");
+    } else {
+    return(x);
+    }
+}
 
 function buildTable2(data){
     var table = document.getElementById('myTable2')
 
     for (var i = 0; i < data.length; i++){
         var row = `<tr>
-                        <td class="classcolumn">${data[i].class}</td>
-                        <td class="workcolumn">${data[i].work}</td>
+                        <td class="classcolumn">${addElipses(data[i].class)}</td>
+                        <td class="workcolumn">${addElipses(data[i].work)}</td>
                         <td class="duecolumn">${data[i].due}</td>
                   </tr>`
         table.innerHTML += row
-    
+
 
     }
 }

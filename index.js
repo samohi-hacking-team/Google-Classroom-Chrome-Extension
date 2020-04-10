@@ -2,6 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/classroom.courses.readonly', "https://www.googleapis.com/auth/classroom.coursework.me", "https://www.googleapis.com/auth/classroom.coursework.me.readonly", "https://www.googleapis.com/auth/classroom.coursework.students", "https://www.googleapis.com/auth/classroom.coursework.students.readonly"];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -96,7 +97,7 @@ function listCourses(auth) {
                                 var t = new Date(item.dueDate.year, item.dueDate.month, item.dueDate.day, item.dueTime.hours, item.dueTime.minutes);
                                 //console.log(t);
                                 var n = t.toLocaleDateString();
-                                console.log(course.name + " " + item.title + " " + n)
+                                console.log(course.name + " " + item.title + " " + t)
                                 //console.log(item.dueDate.year, item.dueDate.month, item.dueDate.day, item.dueTime.hours, item.dueTime.minutes)
                                 // console.log(course.name, item.title, item.dueDate, item.dueDate.day)
                                 data.push({ 'class': course.name, 'work': item.title, 'due': t })
@@ -124,7 +125,6 @@ function listCourses(auth) {
 }
 
 
-
 function addElipses(x) {
     var y;
     var z;
@@ -139,7 +139,6 @@ function addElipses(x) {
 }
 
 function buildTable2(data) {
-    console.log("Finlay sexy as hell Finlay sexy as hell Finlay sexy as hell", data)
     var table = document.getElementById('myTable2')
 
     for (var i = 0; i < data.length; i++) {

@@ -1,4 +1,4 @@
-const fs = require('fs');
+/* const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
@@ -23,7 +23,7 @@ fs.readFile('credentials.json', (err, content) => {
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-function authorize(credentials, callback) {
+/* function authorize(credentials, callback) {
     const { client_secret, client_id, redirect_uris } = credentials.installed;
     const oAuth2Client = new google.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
@@ -35,43 +35,65 @@ function authorize(credentials, callback) {
         callback(oAuth2Client);
     });
 }
-
+*/
 /**
  * Get and store new token after prompting for user authorization, and then
  * execute the given callback with the authorized OAuth2 client.
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-function getNewToken(oAuth2Client, callback) {
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    rl.question('Enter the code from that page here: ', (code) => {
-        rl.close();
-        oAuth2Client.getToken(code, (err, token) => {
-            if (err) return console.error('Error retrieving access token', err);
-            oAuth2Client.setCredentials(token);
-            // Store the token to disk for later program executions
-            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                if (err) return console.error(err);
-                console.log('Token stored to', TOKEN_PATH);
-            });
-            callback(oAuth2Client);
-        });
-    });
-}
 
+/* 
+function getNewToken(oAuth2Client, callback) {
+   const authUrl = oAuth2Client.generateAuthUrl({
+       access_type: 'offline',
+       scope: SCOPES,
+   });
+   console.log('Authorize this app by visiting this url:', authUrl);
+   const rl = readline.createInterface({
+       input: process.stdin,
+       output: process.stdout,
+   });
+   rl.question('Enter the code from that page here: ', (code) => {
+       rl.close();
+       oAuth2Client.getToken(code, (err, token) => {
+           if (err) return console.error('Error retrieving access token', err);
+           oAuth2Client.setCredentials(token);
+           // Store the token to disk for later program executions
+           fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+               if (err) return console.error(err);
+               console.log('Token stored to', TOKEN_PATH);
+           });
+           callback(oAuth2Client);
+       });
+   });
+}
+*/
 /**
  * Lists the first 10 courses the user has access to.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
+
+/* 
+function listCourses(auth) {
+   const classroom = google.classroom({ version: 'v1', auth });
+   classroom.courses.list({
+       pageSize: 10,
+   }, (err, res) => {
+       if (err) return console.error('The API returned an error: ' + err);
+       const courses = res.data.courses;
+       if (courses && courses.length) {
+           console.log('Courses:');
+           courses.forEach((course) => {
+               console.log(`${course.name} (${course.id})`);
+           });
+       } else {
+           console.log('No courses found.');
+       }
+   });
+}
+*/
 
 function listCourses(auth) {
     const classroom = google.classroom({ version: 'v1', auth });
@@ -89,7 +111,9 @@ function listCourses(auth) {
                     "courseWorkStates": ["PUBLISHED"],
                     "orderBy": "dueDate desc"
                 })
+
                     .then(function (response) {
+                        console.log("Got response")
                         const courseWork = response.data.courseWork;
                         data = [];
                         courseWork.forEach((item) => {
@@ -100,11 +124,10 @@ function listCourses(auth) {
                                 console.log(course.name + " " + item.title + " " + t)
                                 //console.log(item.dueDate.year, item.dueDate.month, item.dueDate.day, item.dueTime.hours, item.dueTime.minutes)
                                 // console.log(course.name, item.title, item.dueDate, item.dueDate.day)
-                                data.push({ 'class': course.name, 'work': item.title, 'due': t })
+                                data.push({ class: course.name, work: item.title, due: t })
                             }
                         })
                         buildTable2(data)
-                        console.log(data)
                         //console.log(response.courseWork)
 
                     },
@@ -124,7 +147,6 @@ function listCourses(auth) {
     });
 }
 
-
 function addElipses(x) {
     var y;
     var z;
@@ -137,6 +159,14 @@ function addElipses(x) {
         return (x);
     }
 }
+
+var myArray2 = [
+    { 'class': 'English', 'work': 'Read 20 mins', 'due': '11:00 AM' },
+    { 'class': 'English', 'work': 'Write Essay', 'due': '11:00 PM' },
+    { 'class': 'Math', 'work': 'Trig functions and parallel lines using math stuff', 'due': '11:00 PM' },
+    { 'class': 'Science', 'work': 'Study whales', 'due': '11:00 AM' },
+]
+//buildTable2(data)
 
 function buildTable2(data) {
     var table = document.getElementById('myTable2')
@@ -154,7 +184,7 @@ function buildTable2(data) {
 }
 
 var myArray = [
-    { 'day': 'Today', 'asignments': 'You Have 5 Assignments' },
+    { 'day': 'Today', 'asignments': 'Assignments' },
 ]
 
 buildTable(myArray)
@@ -163,9 +193,27 @@ function buildTable(data) {
 
     for (var i = 0; i < data.length; i++) {
         var row = `<tr>
-                        <td class="daybox">${data[i].day}</td>
-                        <td class="dayhead">${data[i].asignments}</td>
-                  </tr>`
+        <td class="daybox">${data[i].day}</td>
+        <td class="dayhead">${data[i].asignments}</td>
+  </tr>`
+        table.innerHTML += row
+    }
+}
+
+
+var tomAssignments = [
+    { 'day': 'Tomorrow', 'asignments': 'Assignments' },
+]
+
+buildTable(tomAssignments)
+function buildTable(data) {
+    var table = document.getElementById('myTable5')
+
+    for (var i = 0; i < data.length; i++) {
+        var row = `<tr>
+        <td class="daybox">${data[i].day}</td>
+        <td class="dayhead">${data[i].asignments}</td>
+  </tr>`
         table.innerHTML += row
     }
 }
